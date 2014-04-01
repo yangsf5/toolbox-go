@@ -1,0 +1,1 @@
+go run ../group_count.go -file=./input.txt -reg=recv=\d+
