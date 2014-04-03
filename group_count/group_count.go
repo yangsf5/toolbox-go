@@ -12,7 +12,7 @@ import (
 
 func main() {
 	fileName := flag.String("file", "", "file name")
-	reg := flag.String("reg", "", "regexp")
+	reg := flag.String("reg", "", "regexp, must with submatch.")
 	flag.Parse()
 
 	if *fileName == "" || *reg == "" {
@@ -29,8 +29,14 @@ func main() {
 	groups := make(map[string]int)
 	scan := bufio.NewScanner(file)
 	for scan.Scan() {
-		group := re.FindString(scan.Text())
-		groups[group]++
+		ret := re.FindStringSubmatch(scan.Text())
+		if ret == nil {
+			continue
+		}
+		group := ret[1]
+		if group != "" {
+			groups[group]++
+		}
 	}
 
 	if err := scan.Err(); err != nil {
@@ -38,6 +44,6 @@ func main() {
 	}
 
 	for name, count := range groups {
-		fmt.Printf("count of [%s]: %d\n", name, count)
+		fmt.Printf("%s %d\n", name, count)
 	}
 }

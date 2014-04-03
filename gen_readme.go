@@ -3,7 +3,6 @@
 package main
 
 import (
-	"fmt"
 	"io/ioutil"
 	"os"
 	"os/exec"
@@ -19,7 +18,7 @@ func main() {
 	paths, err := filepath.Glob("*")
 	checkError(err)
 
-	readme, err = os.OpenFile("./README.md", os.O_WRONLY, os.ModePerm)
+	readme, err = os.OpenFile("./README.md", os.O_WRONLY|os.O_TRUNC|os.O_CREATE, os.ModePerm)
 	checkError(err)
 	defer readme.Close()
 
@@ -84,7 +83,6 @@ func writeExample(name, input, cmd, output string) {
 	write("#### output\n")
 	write("```\n")
 	write(output)
-	fmt.Println(output)
 	write("```\n")
 }
 
