@@ -11,14 +11,15 @@ import (
 )
 
 var (
-	column = flag.Int("column", 1, "number of column")
+	column = flag.Int("column", 1, "which column, number of column")
+	sep = flag.String("sep", " ", "separate string")
 )
 
 func main() {
 	flag.Parse()
 	scanner := bufio.NewScanner(os.Stdin)
 	for scanner.Scan() {
-		if strs := strings.Split(scanner.Text(), " "); *column <= len(strs) {
+		if strs := strings.Split(scanner.Text(), *sep); *column <= len(strs) {
 			fmt.Println(strs[*column - 1])
 		}
 	}
