@@ -3,6 +3,7 @@
 package main
 
 import (
+	"fmt"
 	"io/ioutil"
 	"os"
 	"os/exec"
@@ -62,8 +63,10 @@ func gen(path string) {
 	cmdArgs := strings.Split(cmdStr, " ")
 	cmd := exec.Command(cmdArgs[0], cmdArgs[1:]...)
 
-	output, err := cmd.Output()
-	checkError(err)
+	output, err := cmd.CombinedOutput()
+	if err != nil {
+		panic(fmt.Sprintf("Commond error, err=%s\noutput=%s", err.Error(), output))
+	}
 
 	writeExample(path, "", cmdStr, string(output))
 }
